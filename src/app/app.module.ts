@@ -21,20 +21,34 @@ const appRoutes: Routes=[
   },
   {
     path: 'users', //the path is what you see after / - so it would be localhost:4200/users
-    component: UsersComponent // when visiting users path, load users component
+    component: UsersComponent, // when visiting users path, load users component
+    children: [
+      {
+        /*
+          colon just says its dynamic and then in the component you can look for the word 'id'
+          doesn't have to be id - this is just a name, we can call it name, username, etc - anything we want
+        */
+        path: ':id/:name', 
+        component: UserComponent 
+      }
+    ]
   },
-  {
-    /*
-      colon just says its dynamic and then in the component you can look for the word 'id'
-      doesn't have to be id - this is just a name, we can call it name, username, etc - anything we want
-    */
-    path: 'users/:id/:name', 
-    component: UserComponent 
-  },
+  
   {
     path: 'servers', 
-    component: ServersComponent 
-  }
+    component: ServersComponent,
+    children: [
+      {
+        path: ':id', //this is the same as /servers/:id
+        component: ServerComponent 
+      },
+      {
+        path: ':id/edit', 
+        component: EditServerComponent 
+      }
+    ]
+  },
+  
 ]
 
 @NgModule({

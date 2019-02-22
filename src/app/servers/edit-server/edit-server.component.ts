@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { ServersService } from '../servers.service';
 
@@ -11,11 +12,30 @@ export class EditServerComponent implements OnInit {
   server: {id: number, name: string, status: string};
   serverName = '';
   serverStatus = '';
+  allowEdit = false;
 
-  constructor(private serversService: ServersService) { }
+  constructor(
+    private serversService: ServersService, 
+    private route: ActivatedRoute 
+  ) { }
 
   ngOnInit() {
-    this.server = this.serversService.getServer(1);
+    //same thing with snapshot it wont reload if the contents change
+    console.log(this.route.snapshot.queryParams);
+    console.log(this.route.snapshot.fragment);
+
+    //this will allow you to react to changes to params and fragment
+    this.route.queryParams.subscribe(
+      (queryParams: Params) => {
+        this.allowEdit = queryParams['allowEdit'] === '1' ? true : false;
+      }
+    ); 
+    this.route.fragment.subscribe();
+
+    const id = +this.route.snapshot.params['id'];
+    this.server = this.serversService.getServer(id);
+
+    // this.server = this.serversService.getServer(this.route.params['id']);
     this.serverName = this.server.name;
     this.serverStatus = this.server.status;
   }
