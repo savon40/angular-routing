@@ -24,6 +24,14 @@ const appRoutes: Routes=[
     component: UsersComponent // when visiting users path, load users component
   },
   {
+    /*
+      colon just says its dynamic and then in the component you can look for the word 'id'
+      doesn't have to be id - this is just a name, we can call it name, username, etc - anything we want
+    */
+    path: 'users/:id/:name', 
+    component: UserComponent 
+  },
+  {
     path: 'servers', 
     component: ServersComponent 
   }
